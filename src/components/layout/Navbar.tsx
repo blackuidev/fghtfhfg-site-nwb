@@ -4,31 +4,30 @@ import { Menu } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { SparkleNavbar } from '@/components/ui/sparkle-navbar';
+import SparkleNavbar from '@/components/ui/sparkle-navbar';
 
 const navLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'Portfolio', href: '/portfolio' },
-  { name: 'About', href: '/about' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'Home', path: '/' },
+  { name: 'About', path: '/about' },
+  { name: 'Portfolio', path: '/portfolio' },
+  { name: 'Contact', path: '/contact' },
 ];
 
-export function Navbar() {
+const Navbar: React.FC = () => {
   return (
-    <SparkleNavbar className="sticky top-0 z-50 w-full bg-transparent">
+    <SparkleNavbar className="fixed top-0 left-0 right-0 z-50">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        {/* Logo/Site Title */}
-        <Link to="/" className="text-2xl font-bold text-white hover:text-gray-300 transition-colors duration-200">
-          YourBrand
+        <Link to="/" className="text-2xl font-bold text-white">
+          MySite
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-6">
+        <nav className="hidden md:flex space-x-6">
           {navLinks.map((link) => (
             <Link
               key={link.name}
-              to={link.href}
-              className="text-sm font-medium transition-colors hover:text-gray-300 text-white"
+              to={link.path}
+              className="text-lg font-medium text-gray-300 hover:text-white transition-colors"
             >
               {link.name}
             </Link>
@@ -36,30 +35,32 @@ export function Navbar() {
         </nav>
 
         {/* Mobile Navigation */}
-        <div className="md:hidden flex items-center">
+        <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-gray-800">
+              <Button variant="ghost" size="icon" className="text-white">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="bg-gray-900 text-white border-l border-gray-700 w-[70vw] sm:w-[50vw]">
-              <div className="flex flex-col space-y-6 pt-8">
+            <SheetContent side="right" className="w-[200px] sm:w-[250px] bg-gray-900 text-white">
+              <nav className="flex flex-col gap-4 pt-8">
                 {navLinks.map((link) => (
                   <Link
                     key={link.name}
-                    to={link.href}
-                    className="text-xl font-medium hover:text-gray-400 block px-4 py-2 transition-colors duration-200"
+                    to={link.path}
+                    className="text-xl font-medium hover:text-gray-300 transition-colors"
                   >
                     {link.name}
                   </Link>
                 ))}
-              </div>
+              </nav>
             </SheetContent>
           </Sheet>
         </div>
       </div>
     </SparkleNavbar>
   );
-}
+};
+
+export default Navbar;
