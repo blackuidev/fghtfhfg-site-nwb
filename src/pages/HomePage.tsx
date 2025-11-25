@@ -1,59 +1,36 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import { BorderBeam } from '@/components/ui/border-beam';
-import { Carousel3D } from '@/components/ui/3d-carousel';
+import Carousel3D from '@/components/ui/3d-carousel';
 import { TrustedUsers } from '@/components/ui/trusted-users';
 
-const HomePage: React.FC = () => {
+const HomePage = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <header className="container mx-auto py-8 text-center">
-        <h1 className="text-5xl font-bold">Welcome to Our Site!</h1>
-        <p className="mt-4 text-xl text-muted-foreground">Explore our amazing features.</p>
-      </header>
+    <div className="min-h-screen bg-background text-foreground p-4">
+      <h1 className="text-4xl font-bold mb-8 text-center">Welcome to Our Homepage</h1>
 
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-semibold text-center mb-12">Our Showcase</h2>
-          <div className="relative flex justify-center items-center">
-            <Carousel3D />
-          </div>
+      <section className="mb-12">
+        <h2 className="text-3xl font-semibold mb-4 text-center">Our Featured Carousel</h2>
+        <div className="relative w-full max-w-5xl mx-auto h-[400px] flex items-center justify-center">
+          <Carousel3D />
+          <BorderBeam />
         </div>
       </section>
 
-      <section className="py-16 bg-muted">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-semibold text-center mb-12">Why Choose Us?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <Card className="p-6 text-center relative overflow-hidden">
-              <BorderBeam className="absolute inset-0" />
-              <h3 className="text-2xl font-bold mb-2">Feature One</h3>
-              <p className="text-muted-foreground">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </Card>
-            <Card className="p-6 text-center relative overflow-hidden">
-              <BorderBeam className="absolute inset-0" />
-              <h3 className="text-2xl font-bold mb-2">Feature Two</h3>
-              <p className="text-muted-foreground">Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            </Card>
-            <Card className="p-6 text-center relative overflow-hidden">
-              <BorderBeam className="absolute inset-0" />
-              <h3 className="text-2xl font-bold mb-2">Feature Three</h3>
-              <p className="text-muted-foreground">Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-semibold text-center mb-12">Trusted By</h2>
+      <section className="mb-12">
+        <h2 className="text-3xl font-semibold mb-4 text-center">Trusted by Many</h2>
+        <Card className="p-6 max-w-3xl mx-auto">
           <TrustedUsers />
-        </div>
+        </Card>
       </section>
 
-      <footer className="py-8 text-center text-muted-foreground">
-        <p>&copy; 2023 Your Company. All rights reserved.</p>
-      </footer>
+      <section>
+        <h2 className="text-3xl font-semibold mb-4 text-center">More Content</h2>
+        <Card className="p-6 max-w-2xl mx-auto text-center">
+          <p>This is a placeholder for more content on the home page.</p>
+          <p>Feel free to explore our site!</p>
+        </Card>
+      </section>
     </div>
   );
 };
