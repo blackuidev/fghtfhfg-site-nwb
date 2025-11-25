@@ -1,76 +1,77 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { MenuIcon } from 'lucide-react';
+import { Link, NavLink } from 'react-router-dom';
+import { Menu } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import useMobile from '@/components/hooks/use-mobile'; // Corrected import: Changed from named to default import
+import { useMobile } from '@/components/hooks/use-mobile'; // Corrected import
 import { cn } from '@/components/lib/utils';
 
-interface NavLinkProps {
-  to: string;
-  children: React.ReactNode;
-  onClick?: () => void;
-}
+const Navbar = () => {
+  const isMobile = useMobile(); // Assuming useMobile returns a boolean
 
-const NavLink: React.FC<NavLinkProps> = ({ to, children, onClick }) => (
-  <Link
-    to={to}
-    className="text-sm font-medium transition-colors hover:text-primary"
-    onClick={onClick}
-  >
-    {children}
-  </Link>
-);
-
-const Navbar: React.FC = () => {
-  const isMobile = useMobile();
-
+  // Example navigation items
   const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
-    { name: 'Portfolio', path: '/portfolio' },
-    { name: 'Contact', path: '/contact' },
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/about' },
+    { name: 'Portfolio', href: '/portfolio' },
+    { name: 'Contact', href: '/contact' },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 items-center justify-between">
-        <Link to="/" className="mr-6 flex items-center space-x-2">
-          <span className="font-bold">MySite</span>
+    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
+      <div className="container mx-auto flex h-16 items-center justify-between px-4">
+        <Link to="/" className="text-xl font-bold">
+          MySite
         </Link>
 
-        {!isMobile && (
-          <nav className="flex items-center space-x-4 lg:space-x-6">
-            {navItems.map((item) => (
-              <NavLink key={item.name} to={item.path}>
-                {item.name}
-              </NavLink>
-            ))}
-          </nav>
-        )}
-
-        {isMobile && (
+        {isMobile ? (
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="ml-auto md:hidden">
-                <MenuIcon className="h-6 w-6" />
-                <span className="sr-only">Toggle menu</span>
+              <Button variant="ghost" size="icon">
+                <Menu className="h-6 w-6" />
+                <span className="sr-only">Open menu</span>
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
-              <div className="flex flex-col space-y-3 pt-6">
+              <div className="flex flex-col gap-4 pt-6">
                 {navItems.map((item) => (
-                  <NavLink key={item.name} to={item.path}>
+                  <NavLink
+                    key={item.name}
+                    to={item.href}
+                    className={({ isActive }) =>
+                      cn(
+                        'text-lg font-medium transition-colors hover:text-primary',
+                        isActive ? 'text-primary' : 'text-muted-foreground'
+                      )
+                    }
+                  >
                     {item.name}
                   </NavLink>
                 ))}
               </div>
             </SheetContent>
           </Sheet>
+        ) : (
+          <div className="flex items-center space-x-6">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.name}
+                to={item.href}
+                className={({ isActive }) =>
+                  cn(
+                    'text-sm font-medium transition-colors hover:text-primary',
+                    isActive ? 'text-primary' : 'text-muted-foreground'
+                  )
+                }
+              >
+                {item.name}
+              </NavLink>
+            ))}
+          </div>
         )}
       </div>
-    </header>
+    </nav>
   );
 };
 
