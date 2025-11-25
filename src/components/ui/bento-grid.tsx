@@ -1,8 +1,7 @@
-import React from 'react';
-import { cn } from "@/lib/utils";
+import React from "react";
+import { cn } from "@/components/lib/utils";
 
-// BentoGrid component
-const BentoGrid = ({
+export const BentoGrid = ({
   className,
   children,
 }: {
@@ -12,7 +11,7 @@ const BentoGrid = ({
   return (
     <div
       className={cn(
-        "grid md:auto-rows-[18rem] grid-cols-1 md:grid-cols-3 gap-4 max-w-7xl mx-auto",
+        "grid md:auto-rows-[18rem] grid-cols-1 md:grid-cols-3 gap-4 max-w-7xl mx-auto ",
         className
       )}
     >
@@ -21,8 +20,7 @@ const BentoGrid = ({
   );
 };
 
-// BentoGridItem component
-const BentoGridItem = ({
+export const BentoGridItem = ({
   className,
   title,
   description,
@@ -55,6 +53,3 @@ const BentoGridItem = ({
     </div>
   );
 };
-
-// Export both components to make them available for import
-export { BentoGrid, BentoGridItem };
