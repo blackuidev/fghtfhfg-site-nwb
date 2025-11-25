@@ -1,42 +1,82 @@
-import React from 'react';
-import { Card } from '@/components/ui/card';
-import { BorderBeam } from '@/components/ui/border-beam';
-import { Carousel3D } from '@/components/ui/3d-carousel';
-import { TrustedUsers } from '@/components/ui/trusted-users';
+import React, { useEffect, useState } from 'react';
+
+interface Item {
+  id: string;
+  name: string;
+}
+
+interface PageData {
+  title: string;
+  items: Item[];
+}
 
 const HomePage: React.FC = () => {
+  // Initialize pageData as undefined to simulate data loading state
+  const [pageData, setPageData] = useState<PageData | undefined>(undefined);
+
+  useEffect(() => {
+    // Simulate data fetching from an API or async source
+    const fetchData = async () => {
+      try {
+        // Simulate a network delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
+        // Simulate successful data fetch
+        setPageData({
+          title: "Welcome to our Home Page!",
+          items: [
+            { id: '1', name: 'Showcase Item 1' },
+            { id: '2', name: 'Showcase Item 2' },
+            { id: '3', name: 'Showcase Item 3' },
+            { id: '4', name: 'Showcase Item 4' }
+          ]
+        });
+
+        // Uncomment the line below to simulate a case where 'items' might be an empty array
+        // setPageData({ title: "Welcome!", items: [] });
+
+        // Uncomment the line below to simulate a case where data fetching fails or returns undefined
+        // setPageData(undefined);
+
+      } catch (error) {
+        console.error("Failed to fetch homepage data:", error);
+        // Optionally set an error state or display an error message
+        setPageData(undefined); // Ensure pageData is undefined on error too
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-4">
-      <h1 className="text-4xl font-bold mb-8">Welcome to the Home Page</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-5xl">
-        <Card className="p-6 text-center">
-          <h2 className="text-2xl font-semibold mb-2">Card Component</h2>
-          <p>This is an example of a Card component.</p>
-        </Card>
-        <Card className="p-6 text-center">
-          <h2 className="text-2xl font-semibold mb-2">Another Card</h2>
-          <p>More content for another card.</p>
-        </Card>
-        <Card className="p-6 text-center">
-          <h2 className="text-2xl font-semibold mb-2">Yet Another</h2>
-          <p>And one more card for good measure.</p>
-        </Card>
-      </div>
+    <div className="container mx-auto p-4 min-h-screen">
+      <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800 dark:text-gray-100 animate-fade-in">
+        {pageData?.title || "Loading Homepage..."}
+      </h1>
 
-      <div className="my-12 relative w-full max-w-lg h-64 flex items-center justify-center border rounded-lg overflow-hidden">
-        <BorderBeam size={250} duration={12} delay={9} />
-        <p className="relative z-10 text-lg">BorderBeam Example</p>
-      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 animate-slide-up">
+        {/* Defensive programming: Ensure pageData.items is an array before mapping. */}
+        {/* If pageData is undefined or pageData.items is undefined, it defaults to an empty array. */}
+        {(pageData?.items || []).map(item => (
+          <div key={item.id} className="p-6 border border-gray-200 dark:border-gray-700 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800">
+            <h2 className="text-2xl font-semibold mb-2 text-gray-900 dark:text-white">{item.name}</h2>
+            <p className="text-gray-600 dark:text-gray-400">Details for {item.name} go here.</p>
+          </div>
+        ))}
 
-      <div className="my-12 w-full max-w-full">
-        <h2 className="text-3xl font-semibold mb-6 text-center">3D Carousel Showcase</h2>
-        <Carousel3D />
-      </div>
+        {/* Optional: Display a loading message when data is still being fetched */}
+        {!pageData && (
+          <div className="col-span-full text-center py-10 text-gray-500 dark:text-gray-400">
+            <p>Fetching exciting content for you...</p>
+          </div>
+        )}
 
-      <div className="my-12 w-full max-w-5xl">
-        <h2 className="text-3xl font-semibold mb-6 text-center">Our Trusted Users</h2>
-        <TrustedUsers />
+        {/* Optional: Display a message when no items are available after loading */}
+        {pageData && pageData.items.length === 0 && (
+          <div className="col-span-full text-center py-10 text-gray-500 dark:text-gray-400">
+            <p>No items to display at the moment. Please check back later!</p>
+          </div>
+        )}
       </div>
     </div>
   );
