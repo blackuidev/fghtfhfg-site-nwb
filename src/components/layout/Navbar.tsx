@@ -1,76 +1,46 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
 import { Menu } from 'lucide-react';
-
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { useMobile } from '@/components/hooks/use-mobile'; // Corrected import
+import { useMobile } from '@/components/hooks/use-mobile'; // Corrected import: Changed from default to named import
 import { cn } from '@/components/lib/utils';
 
-const Navbar = () => {
-  const isMobile = useMobile(); // Assuming useMobile returns a boolean
+interface NavbarProps {
+  className?: string;
+}
 
-  // Example navigation items
-  const navItems = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Portfolio', href: '/portfolio' },
-    { name: 'Contact', href: '/contact' },
-  ];
+const Navbar: React.FC<NavbarProps> = ({ className }) => {
+  const { isMobile } = useMobile();
 
   return (
-    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border">
-      <div className="container mx-auto flex h-16 items-center justify-between px-4">
-        <Link to="/" className="text-xl font-bold">
-          MySite
-        </Link>
-
-        {isMobile ? (
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-6 w-6" />
-                <span className="sr-only">Open menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right">
-              <div className="flex flex-col gap-4 pt-6">
-                {navItems.map((item) => (
-                  <NavLink
-                    key={item.name}
-                    to={item.href}
-                    className={({ isActive }) =>
-                      cn(
-                        'text-lg font-medium transition-colors hover:text-primary',
-                        isActive ? 'text-primary' : 'text-muted-foreground'
-                      )
-                    }
-                  >
-                    {item.name}
-                  </NavLink>
-                ))}
-              </div>
-            </SheetContent>
-          </Sheet>
-        ) : (
-          <div className="flex items-center space-x-6">
-            {navItems.map((item) => (
-              <NavLink
-                key={item.name}
-                to={item.href}
-                className={({ isActive }) =>
-                  cn(
-                    'text-sm font-medium transition-colors hover:text-primary',
-                    isActive ? 'text-primary' : 'text-muted-foreground'
-                  )
-                }
-              >
-                {item.name}
-              </NavLink>
-            ))}
-          </div>
-        )}
+    <nav className={cn('flex items-center justify-between p-4 bg-background shadow-sm', className)}>
+      <div className="text-xl font-bold text-foreground">
+        <a href="/">MySite</a>
       </div>
+      {isMobile ? (
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" aria-label="Toggle mobile menu">
+              <Menu className="h-6 w-6 text-foreground" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[250px] sm:w-[300px]">
+            <div className="flex flex-col gap-4 p-4">
+              <a href="/" className="text-lg font-medium hover:text-primary transition-colors">Home</a>
+              <a href="/about" className="text-lg font-medium hover:text-primary transition-colors">About</a>
+              <a href="/portfolio" className="text-lg font-medium hover:text-primary transition-colors">Portfolio</a>
+              <a href="/contact" className="text-lg font-medium hover:text-primary transition-colors">Contact</a>
+            </div>
+          </SheetContent>
+        </Sheet>
+      ) : (
+        <div className="flex gap-6">
+          <a href="/" className="text-lg font-medium text-foreground hover:text-primary transition-colors">Home</a>
+          <a href="/about" className="text-lg font-medium text-foreground hover:text-primary transition-colors">About</a>
+          <a href="/portfolio" className="text-lg font-medium text-foreground hover:text-primary transition-colors">Portfolio</a>
+          <a href="/contact" className="text-lg font-medium text-foreground hover:text-primary transition-colors">Contact</a>
+        </div>
+      )}
     </nav>
   );
 };
