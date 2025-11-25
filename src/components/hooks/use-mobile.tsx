@@ -1,26 +1,26 @@
 import { useState, useEffect } from 'react';
 
-const MOBILE_BREAKPOINT = 768; // Common breakpoint for mobile devices
-
 export function useMobile() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < MOBILE_BREAKPOINT);
+    const handleResize = () => {
+      // Adjust breakpoint as needed, common breakpoint for mobile is 768px
+      setIsMobile(window.innerWidth < 768);
     };
 
-    // Initial check
-    checkMobile();
+    // Ensure window is defined to prevent errors during server-side rendering (SSR)
+    if (typeof window !== 'undefined') {
+      handleResize(); // Set initial value on mount
+      window.addEventListener('resize', handleResize);
+    }
 
-    // Listen for window resize events
-    window.addEventListener('resize', checkMobile);
-
-    // Clean up event listener
     return () => {
-      window.removeEventListener('resize', checkMobile);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize);
+      }
     };
-  }, []);
+  }, []); // Empty dependency array ensures this effect runs only once on mount and cleanup on unmount
 
   return isMobile;
 }
