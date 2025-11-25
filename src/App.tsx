@@ -1,36 +1,33 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import 'react-toastify/dist/ReactToastify.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+// Page Imports
+import HomePage from './pages/Index'; // Using existing Index.tsx for the home page
+import NotFoundPage from './pages/NotFound'; // Using existing NotFound.tsx for 404
+// Placeholder imports for other pages - assume these will be created in src/pages/
+import PortfolioPage from './pages/PortfolioPage';
+import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
 
-const queryClient = new QueryClient();
+// Component Imports - assume these will be created in src/components/ui/
+import Navbar from './components/ui/Navbar';
+import Footer from './components/ui/Footer';
 
-// =======================================================
-// ✅ Wrapper that hides Header on specific routes
-// =======================================================
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    return (
-        <>
-            {/* {!shouldHideHeader && <Header />} */}
-            {children}
-        </>
-    );
-};
-// =======================================================
+import './App.css'; // Keep existing CSS import
 
-const App = () => (
-    <div className="font-primarylw">
-        <QueryClientProvider client={queryClient}>
-            <BrowserRouter>
-                <Layout>
-                    <Routes>
-                        <Route path="/" element={<Index />} />
-                    </Routes>
-                </Layout>
-            </BrowserRouter>
-        </QueryClientProvider>
-    </div >
-);
+function App() {
+  return (
+    <BrowserRouter>
+      <Navbar /> {/* Render Navbar globally across all routes */}
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/portfolio" element={<PortfolioPage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="*" element={<NotFoundPage />} /> {/* Catch-all route for 404 Not Found */}
+      </Routes>
+      <Footer /> {/* Render Footer globally across all routes */}
+    </BrowserRouter>
+  );
+}
 
 export default App;
